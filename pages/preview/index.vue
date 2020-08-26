@@ -1,9 +1,9 @@
 <script>
 export default {
-  asyncData({ route }) {
-    const title = route.query.title || 'Default title'
-    return { title }
-  },
+  data: () => ({
+    title: '',
+    description: ''
+  }),
   head() {
     return {
       title: this.title,
@@ -13,8 +13,16 @@ export default {
           name: 'og:title',
           content: this.title,
         },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: this.description,
+        },
       ],
     }
+  },
+  mounted() {
+    this.title = this.$route.query.title
   },
 }
 </script>
