@@ -1,9 +1,47 @@
 <script>
+import MetaForm from '~/components/meta/MetaForm'
+import CopyInput from '~/components/common/CopyInput'
+
 export default {
+  components: {
+    MetaForm,
+    CopyInput,
+  },
+
   data: () => ({
-    defaultTitle: '',
-    // description: ''
+    currentUrl: '',
+    meta: {
+      ogTitle: '',
+    },
   }),
+  computed: {
+    title() {
+      return this.$route.query.title
+    },
+    description() {
+      return this.$route.query.description || 'description'
+    },
+  },
+
+  watch: {
+    meta: {
+      deep: true,
+      handler() {
+        this.$router.replace({ query: this.meta }, () => {
+          this.currentUrl = window.location.href
+        })
+      },
+    },
+  },
+
+  mounted() {
+    this.currentUrl = window.location.href
+  },
+  methods: {
+    updateHead() {
+      this.title = this.$route.query.title
+    },
+  },
   head() {
     return {
       title: this.title,
@@ -21,22 +59,14 @@ export default {
       ],
     }
   },
-  computed: {
-    title() {
-      return this.$route.query.title
-    },
-    description() {
-      return this.$route.query.description || 'description'
-    },
-  },
-  methods: {
-    updateHead() {
-      this.title = this.$route.query.title
-    },
-  },
 }
 </script>
 
-<template></template>
+<template>
+  <div>
+    <MetaForm :og-title.sync="meta.ogTitle" />
+    <CopyInput :value="currentUrl" />
+  </div>
+</template>
 
 <style></style>
