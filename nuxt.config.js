@@ -4,6 +4,8 @@ export default {
    ** See https://nuxtjs.org/api/configuration-mode
    */
   mode: 'universal',
+  srcDir: 'src',
+  buildDir: 'functions/.nuxt',
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -54,7 +56,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt/content
-    '@nuxt/content',
+    // '@nuxt/content', // FIXME doesn't work with firebase functions
   ],
   /*
    ** Axios module configuration
@@ -70,5 +72,7 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    extractCSS: true,
+  },
 }
