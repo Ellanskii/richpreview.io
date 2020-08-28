@@ -13,6 +13,10 @@ export default {
       type: Number,
       default: 3000,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data: () => ({
@@ -37,7 +41,7 @@ export default {
 <template>
   <b-tooltip :label="tooltipText" :active="showTooltip" always class="is-flex">
     <b-field :label="label" style="width: 100%">
-      <b-input ref="input" :value="value" expanded></b-input>
+      <b-input ref="input" :value="value" expanded :disabled="disabled"></b-input>
       <p class="control">
         <b-button class="button is-primary" @click="copyToClipboard">
           <b-icon icon="content-copy" />

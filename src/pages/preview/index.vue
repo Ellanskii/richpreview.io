@@ -8,11 +8,17 @@ export default {
     CopyInput,
   },
 
+  asyncData({ route }) {
+    const meta = { // TODO change defaults
+      ogTitle: route.query.ogTitle || 'default title',
+      ogDescription: route.query.ogDescription || 'default description',
+      ogImage: route.query.ogImage || 'default Image',
+    }
+    return { meta }
+  },
+
   data: () => ({
     currentUrl: '',
-    meta: {
-      ogTitle: '',
-    },
   }),
   computed: {
     title() {
@@ -37,11 +43,7 @@ export default {
   mounted() {
     this.currentUrl = window.location.href
   },
-  methods: {
-    updateHead() {
-      this.title = this.$route.query.title
-    },
-  },
+
   head() {
     return {
       title: this.title,
@@ -49,12 +51,17 @@ export default {
         {
           hid: 'og:title',
           name: 'og:title',
-          content: this.title,
+          content: this.meta.ogTitle,
         },
         {
           hid: 'og:description',
           name: 'og:description',
-          content: this.description,
+          content: this.meta.ogDescription,
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          content: this.meta.ogImage,
         },
       ],
     }
@@ -64,8 +71,8 @@ export default {
 
 <template>
   <div>
-    <MetaForm :og-title.sync="meta.ogTitle" />
-    <CopyInput :value="currentUrl" />
+    <MetaForm :og-title.sync="meta.ogTitle" :og-description.sync="meta.ogDescription" :og-image.sync="meta.ogImage" />
+    <CopyInput :value="currentUrl"/>
   </div>
 </template>
 
