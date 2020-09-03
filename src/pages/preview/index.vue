@@ -9,7 +9,8 @@ export default {
   },
 
   asyncData({ route }) {
-    const meta = { // TODO change defaults
+    const meta = {
+      // TODO change defaults
       ogTitle: route.query.ogTitle || 'default title',
       ogDescription: route.query.ogDescription || 'default description',
       ogImage: route.query.ogImage || 'default Image',
@@ -42,6 +43,7 @@ export default {
 
   mounted() {
     this.currentUrl = window.location.href
+    console.log(this.meta.ogImage)
   },
 
   head() {
@@ -63,17 +65,37 @@ export default {
           name: 'og:image',
           content: this.meta.ogImage,
         },
+        {
+          hid: 'og:site_name',
+          name: 'og:site_name',
+          content: 'RICHPREVIEW',
+        },
+        {
+          hid: 'og:url',
+          name: 'og:iurl',
+          content: 'richpreview.io',
+        },
       ],
+      // __dangerouslyDisableSanitizers: ['meta'],
     }
   },
 }
 </script>
 
 <template>
-  <div>
-    <MetaForm :og-title.sync="meta.ogTitle" :og-description.sync="meta.ogDescription" :og-image.sync="meta.ogImage" />
-    <CopyInput :value="currentUrl"/>
-  </div>
+  <main class="container">
+    <div class="columns">
+      <div class="column is-6">
+        <MetaForm
+          :og-title.sync="meta.ogTitle"
+          :og-description.sync="meta.ogDescription"
+          :og-image.sync="meta.ogImage"
+        />
+        <CopyInput :value="currentUrl" />
+      </div>
+      <div class="column is-6"></div>
+    </div>
+  </main>
 </template>
 
 <style></style>

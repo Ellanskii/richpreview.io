@@ -6,34 +6,83 @@ export default {
 
   props: {
     value: String,
-    label: String
+    label: String,
   },
 
   data: () => ({
-    url: '1',
+    image: null,
+    url: '',
+    isLoading: false,
   }),
+
+  methods: {
+    async uploadImage() {
+      // const storage = this.$fireStorageObj()
+
+      const file = this.image
+
+      if (!file.type.match('image.*')) {
+        alert('Please upload an image.')
+        return
+      }
+
+      const metadata = {
+        contentType: file.type,
+      }
+
+      this.isLoading = true
+
+      // Create a reference to the destination where we're uploading
+      // the file.
+      const storage = this.$fireStorageObj()
+      const imageRef = storage.ref(`images/${file.name}`)
+
+      const uploadTask = imageRef
+        .put(file, metadata)
+        .then((snapshot) => {
+          // Once the image is uploaded, obtain the download URL, which
+          // is the publicly accessible URL of the image.
+          return snapshot.ref.getDownloadURL().then((url) => {
+            console.log(url)
+            return url
+          })
+        })
+        .catch((error) => {
+          console.error('Error uploading image', error)
+        })
+      // When the upload ends, set the value of the blog image URL
+      // and signal that uploading is done.
+      uploadTask.then((url) => {
+        this.url = url
+        this.isLoading = false
+      })
+    },
+    deleteImage() {},
+  },
 
   watch: {
     url() {
-      this.$emit('input', this.url)
-    }
-  }
+      this.$emit('input', encodeURIComponent(this.url))
+    },
+  },
 }
 </script>
 
 <template>
   <b-field :label="label">
-    <b-input ref="input" v-model="url" expanded type="url"></b-input>
+    <b-input ref="input" v-model="url" expanded type="url" />
     <p class="control">
-      <b-button class="button is-primary">
+      <b-upload
+        @input="uploadImage"
+        v-model="image"
+        class="button is-primary"
+        :class="{'is-loading': isLoading}"
+      >
         <span v-if="url" class="icon">
-          <img
-            src="https://images.unsplash.com/photo-1526137966266-60618b40bcd4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-            alt=""
-          />
+          <img :src="url" alt />
         </span>
         <b-icon v-else icon="upload" />
-      </b-button>
+      </b-upload>
     </p>
     <p class="control" v-if="url">
       <b-button class="button is-primary">

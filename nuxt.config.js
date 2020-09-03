@@ -57,6 +57,7 @@ export default {
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt/content
     // '@nuxt/content', // FIXME doesn't work with firebase functions
+    '@nuxtjs/firebase',
   ],
   /*
    ** Axios module configuration
@@ -68,6 +69,28 @@ export default {
    ** See https://content.nuxtjs.org/configuration
    */
   content: {},
+  firebase: {
+    config: {
+      apiKey: 'AIzaSyCDXOmWb3XMDv9C6bM1-cDo6-g1gqOHDJA',
+      authDomain: 'richpreviewio.firebaseapp.com',
+      databaseURL: 'https://richpreviewio.firebaseio.com',
+      projectId: 'richpreviewio',
+      storageBucket: 'richpreviewio.appspot.com',
+      messagingSenderId: '1037651875524',
+      appId: '1:1037651875524:web:1d858f599d2758f6f49b91',
+    },
+    services: {
+      auth: true,
+      firestore: true,
+      functions: true,
+      storage: true,
+      // realtimeDb: true,
+      // messaging: true,
+      // performance: true,
+      // analytics: true,
+      // remoteConfig: true,
+    },
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/

@@ -22,13 +22,28 @@
 </template>
 
 <script>
-import Card from '~/components/Card'
-
 export default {
   name: 'HomePage',
 
   components: {
-    Card,
+    
   },
+
+    methods: {
+    async createUser() {
+      try {
+        await this.$fireAuth.createUserWithEmailAndPassword(
+          'foo@foo.foo',
+          'test'
+        )
+      } catch (e) {
+        handleError(e)
+      }
+    }
+  },
+
+  mounted() {
+    // this.createUser()
+  }
 }
 </script>
